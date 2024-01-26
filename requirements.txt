@@ -10,3 +10,8 @@ requests
 # General dependencies
 pandas
 numpy
+
+# Model
+mlflow
+joblib
+lightgbm
