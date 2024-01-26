@@ -14,10 +14,8 @@ st.dataframe(df)  # Same as st.write(df)
 
 st.divider()
 
-st.text_input('Movie title', 'Life of Brian')
-
-value_input = st.text_input('Movie title', 'Life of Brian')
-st.write('The current movie title is', title)
+value_imput = st.text_input('ID client', value='', key=int)
+st.write("L'ID du client est le :", value_imput)
 
 option = st.selectbox(
     'Pour quelle personne voulez vous voir les résultats ?',
@@ -29,5 +27,5 @@ def call_api(id: str) -> dict:
     r = requests.get('http://127.0.0.1:8000/models-results', params={"id": id})
     return r.json()
 
-model_result = call_api(id=option)
+model_result = call_api(id=value_imput)
 st.write(f"Le résultat du model est: {model_result}")
