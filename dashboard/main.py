@@ -58,9 +58,15 @@ st.scatter_chart(chart_data, x='SK_ID_CURR', y=option_col, color='colors')
 
 st.write('Vous avez sélectionné:', option)
 
+
 def call_api(id: str) -> dict:
     r = requests.get('http://127.0.0.1:8000/models-results', params={"id": id})
     return r.json()
-
 model_result = call_api(id=option)
-st.write(f"Le résultat du model est: {model_result}")
+
+
+if st.button("Prédire", type="primary"):
+    st.write(f"{model_result}")
+
+
+

@@ -9,7 +9,7 @@ app = FastAPI()
 model_path = os.path.join("api/pipeline_model.pkl")
 classifier = joblib.load(model_path)
 
-data = pd.read_csv("data/data.csv").set_index(keys=["SK_ID_CURR"])
+data = pd.read_csv("data/data_.csv").set_index(keys=["SK_ID_CURR"])
 target = pd.read_csv("data/target.csv")
 
 class ModelInput(BaseModel):
