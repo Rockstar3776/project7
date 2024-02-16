@@ -37,6 +37,7 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: oc_projet7
+          dns-name-label: project7api
           image: projet7fastapi.azurecr.io/api:latest
           registry-username: ${{ secrets.AZURE_ECR_USERNAME }}
           registry-password: ${{ secrets.AZURE_PASSWORD_TOKEN }}
