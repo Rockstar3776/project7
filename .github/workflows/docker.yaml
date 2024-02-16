@@ -27,6 +27,8 @@ jobs:
         with:
           push: true
           tags: projet7fastapi.azurecr.io/api:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
@@ -43,3 +45,4 @@ jobs:
           registry-password: ${{ secrets.AZURE_PASSWORD_TOKEN }}
           name: api
           location: 'France Central'
+          restart-policy: OnFailure
