@@ -27,11 +27,11 @@ jobs:
         with:
           push: true
           tags: projet7fastapi.azurecr.io/api:latest
-      
+
       - name: 'Login via Azure CLI'
-          uses: azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       - name: 'Deploy to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
