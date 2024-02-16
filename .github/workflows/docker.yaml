@@ -45,4 +45,7 @@ jobs:
           registry-password: ${{ secrets.AZURE_PASSWORD_TOKEN }}
           name: api
           location: 'France Central'
+          ports:
+           - 80
+           - 8000
           restart-policy: OnFailure

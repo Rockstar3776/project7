@@ -15,7 +15,7 @@ To start the project API, run following command.
 ### Docker
 
 1. Build the image: `docker build -t api .`
-2. Run the image: `docker run -p 80:80 api`
+2. Run the image: `docker run -p 8000:8000 api`
 
 ### About FastAPI
 https://fastapi.tiangolo.com/#example
