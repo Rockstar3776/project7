@@ -38,3 +38,5 @@ Login to Azure ECR: `docker login projet7fastapi.azurecr.io -u projet7fastapi -p
 Build the image: `docker build -t projet7fastapi.azurecr.io/api:latest .`
 
 Push the image: `docker push projet7fastapi.azurecr.io/api:latest`
+
+Restart the instance: `az container restart -g oc_projet7 -n api`
