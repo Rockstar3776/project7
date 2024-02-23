@@ -57,7 +57,7 @@ jobs:
           image: projet7fastapi.azurecr.io/projet7:latest
           registry-username: ${{ secrets.AZURE_ECR_USERNAME }}
           registry-password: ${{ secrets.AZURE_PASSWORD_TOKEN }}
-          name: dashboard
+          name: dashboard_customer
           location: 'France Central'
           ports: 8501
           command-line: streamlit run dashboard/main.py --server.port 8501
