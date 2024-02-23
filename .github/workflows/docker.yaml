@@ -46,4 +46,5 @@ jobs:
           name: api
           location: 'France Central'
           ports: 8000
+          command-line: uvicorn api.main:app --host 0.0.0.0 --port 8000
           restart-policy: Always
