@@ -12,4 +12,8 @@ COPY /api ./api
 
 COPY /data ./data
 
+COPY /dashboard ./dashboard
+
 EXPOSE 8000
+
+EXPOSE 8501

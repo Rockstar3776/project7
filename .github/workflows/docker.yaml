@@ -26,7 +26,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: projet7fastapi.azurecr.io/api:latest
+          tags: projet7fastapi.azurecr.io/projet7:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -35,12 +35,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-      - name: 'Deploy to Azure Container Instances'
+      - name: 'Deploy API to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: oc_projet7
           dns-name-label: project7api
-          image: projet7fastapi.azurecr.io/api:latest
+          image: projet7fastapi.azurecr.io/projet7:latest
           registry-username: ${{ secrets.AZURE_ECR_USERNAME }}
           registry-password: ${{ secrets.AZURE_PASSWORD_TOKEN }}
           name: api
@@ -48,3 +48,18 @@ jobs:
           ports: 8000
           command-line: uvicorn api.main:app --host 0.0.0.0 --port 8000
           restart-policy: Always
+
+      - name: 'Deploy DASHBOARD to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: oc_projet7
+          dns-name-label: project7api
+          image: projet7fastapi.azurecr.io/projet7:latest
+          registry-username: ${{ secrets.AZURE_ECR_USERNAME }}
+          registry-password: ${{ secrets.AZURE_PASSWORD_TOKEN }}
+          name: dashboard
+          location: 'France Central'
+          ports: 8501
+          command-line: streamlit run dashboard/main.py --server.port 8501
+          restart-policy: Always
+          
