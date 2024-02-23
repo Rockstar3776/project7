@@ -46,4 +46,4 @@ jobs:
           name: api
           location: 'France Central'
           ports: 8000
-          restart-policy: OnFailure
+          restart-policy: Always
