@@ -6,7 +6,7 @@ import numpy as np
 import os
 
 
-API_ADRESS = os.getenv("API_ADRESS", default="http://20.19.116.88:8000")
+API_ADRESS = os.getenv("API_ADRESS", default="http://project7api.francecentral.azurecontainer.io:8000")
 
 st.title("Dashboard prédiction client")
 
