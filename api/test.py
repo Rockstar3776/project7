@@ -3,6 +3,7 @@ import os
 import joblib
 import pandas as pd
 from pydantic import BaseModel
+import shap
 
 app = FastAPI()
 
@@ -154,11 +155,6 @@ def root():
     return {"message": "Hello, World"}
 
 
-def compute_model_result(parameters: InputModel):
-    df = pd.DataFrame(data=[parameters.model_dump()])
-    return classifier.predict_proba(df)[0]
-
-
 
 
 @app.post("/model-results")
@@ -178,3 +174,15 @@ def get_model_results(inputs: InputModel) -> str:
     return prediction
 
 
+@app.post("/model-shap")
+def get_shap(inputs: InputModel) :
+    df = pd.DataFrame(data=[inputs.model_dump()]).set_index(keys=["SK_ID_CURR"])
+    df[var_num] = scaler.transform(df[var_num])
+    df[var_cat] = encoder.transform(df[var_cat])
+    shap.initjs()
+    data = df[colonnes]
+    shap.initjs()
+    explainer = shap.TreeExplainer(classifier._final_estimator)
+    shap_values = explainer.shap_values(data)
+    print(shap_values)
+    return list(shap_values)
