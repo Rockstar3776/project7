@@ -175,14 +175,15 @@ def get_model_results(inputs: InputModel) -> str:
 
 
 @app.post("/model-shap")
-def get_shap(inputs: InputModel) :
+def get_shap(inputs: InputModel) -> list:
     df = pd.DataFrame(data=[inputs.model_dump()]).set_index(keys=["SK_ID_CURR"])
     df[var_num] = scaler.transform(df[var_num])
     df[var_cat] = encoder.transform(df[var_cat])
-    shap.initjs()
     data = df[colonnes]
     shap.initjs()
     explainer = shap.TreeExplainer(classifier._final_estimator)
     shap_values = explainer.shap_values(data)
-    print(shap_values)
-    return list(shap_values)
+    print(type(shap_values))
+    liste = shap_values[0].tolist()
+    liste = liste + shap_values[1].tolist()
+    return (liste)
