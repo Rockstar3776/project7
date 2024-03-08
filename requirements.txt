@@ -7,7 +7,6 @@ scikit-learn
 streamlit
 requests
 streamlit_shap
-ipython
 
 # General dependencies
 pandas
