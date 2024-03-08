@@ -6,6 +6,7 @@ scikit-learn
 # For the dashboard
 streamlit
 requests
+streamlit_shap
 
 # General dependencies
 pandas
