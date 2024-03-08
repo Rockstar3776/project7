@@ -178,5 +178,6 @@ def get_shap(inputs: InputModel) -> list:
     shap.initjs()
     explainer = shap.TreeExplainer(classifier._final_estimator)
     shap_values = explainer.shap_values(data)
-    liste = shap_values[0].tolist() + shap_values[1].tolist() 
+    liste = shap_values[0].tolist() 
+    liste = liste + shap_values[1].tolist() 
     return liste
