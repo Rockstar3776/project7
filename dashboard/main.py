@@ -7,6 +7,7 @@ import os
 import joblib
 import shap
 from streamlit_shap import st_shap
+import ipython
 
 API_ADRESS = os.getenv("API_ADRESS", default="http://project7api.francecentral.azurecontainer.io:8000")
 
