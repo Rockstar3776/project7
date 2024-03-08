@@ -19,7 +19,8 @@ var_num_path = os.path.join("pickle/var_num.pkl")
 var_num = joblib.load(var_num_path)
 colonnes_path = os.path.join("pickle/colonnes.pkl")
 colonnes = joblib.load(colonnes_path)
-
+colonnes_path = os.path.join("pickle/dict_imputer.plk")
+dict_imputer = joblib.load(colonnes_path)
 
 
 class InputModel(BaseModel):
@@ -156,6 +157,9 @@ def root():
 @app.post("/model-results")
 def get_model_results(inputs: InputModel) -> str:
     df = pd.DataFrame(data=[inputs.model_dump()]).set_index(keys=["SK_ID_CURR"])
+    liste_colonnes_nulles = list(df.iloc[0,:].loc[df.iloc[0,:].isnull()].index)
+    for colonne in liste_colonnes_nulles:
+        df.iloc[0,:][colonne] = dict_imputer[colonne]
     df[var_num] = scaler.transform(df[var_num])
     df[var_cat] = encoder.transform(df[var_cat])
     data = df[colonnes]
@@ -172,6 +176,9 @@ def get_model_results(inputs: InputModel) -> str:
 @app.post("/model-shap")
 def get_shap(inputs: InputModel) -> list:
     df = pd.DataFrame(data=[inputs.model_dump()]).set_index(keys=["SK_ID_CURR"])
+    liste_colonnes_nulles = list(df.iloc[0,:].loc[df.iloc[0,:].isnull()].index)
+    for colonne in liste_colonnes_nulles:
+        df.iloc[0,:][colonne] = dict_imputer[colonne]
     df[var_num] = scaler.transform(df[var_num])
     df[var_cat] = encoder.transform(df[var_cat])
     data = df[colonnes]
