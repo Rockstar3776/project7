@@ -12,6 +12,8 @@ COPY /api ./api
 
 COPY /data ./data
 
+COPY /pickle ./pickle
+
 COPY /dashboard ./dashboard
 
 EXPOSE 8000

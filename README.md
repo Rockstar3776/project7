@@ -15,7 +15,7 @@ To start the project API, run following command.
 ### Docker
 
 1. Build the image: `docker build -t api .`
-2. Run the image: `docker run -p 8000:8000 api`
+2. Run the image: `docker run -p 8000:8000 api uvicorn api.main:app --host 0.0.0.0 --port 8000`
 
 ### About FastAPI
 https://fastapi.tiangolo.com/#example
