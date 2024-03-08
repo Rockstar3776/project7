@@ -10,6 +10,8 @@ requests
 # General dependencies
 pandas
 numpy
+shap
+pytest
 
 # Model
 mlflow
