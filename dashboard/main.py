@@ -8,7 +8,7 @@ import joblib
 import shap
 from streamlit_shap import st_shap
 
-API_ADRESS = os.getenv("API_ADRESS", default="http://127.0.0.1:8000")
+API_ADRESS = os.getenv("API_ADRESS", default="http://project7api.francecentral.azurecontainer.io:8000")
 
 model_path = os.path.join("pickle/pipeline_classifier.pkl")
 classifier = joblib.load(model_path)
@@ -25,6 +25,8 @@ var_num = joblib.load(var_num_path)
 colonnes_path = os.path.join("pickle/colonnes.pkl")
 colonnes = joblib.load(colonnes_path)
 
+X_train = pd.read_csv("data/X_train.csv").set_index(keys=["SK_ID_CURR"])
+
 st.title("Dashboard prédiction client")
 
 # Asking client ID
@@ -35,10 +37,13 @@ option = st.selectbox(
     "Pour quelle personne voulez vous voir les résultats ?", (list_options)
 )
 
-
-# st.table(df.loc[option, :].T)  # Show the data of the client
+with st.sidebar:
+    st.write(option)
+    st.table(df.loc[option, :].T)  # Show the data of the client on sidebar
 
 st.divider()
+
+st.header("Prédiction du crédit")
 
 var_client = df.loc[option, :].rename({"Unnamed: 0": "SK_ID_CURR"})
 liste_colonnes_nulles = list(var_client.loc[var_client.isnull()].index)
@@ -51,8 +56,6 @@ for cle, valeur in client_dict.items():
         client_dict[cle] = int(valeur)
 
 client_json = json.dumps(client_dict)
-st.write(client_dict)
-
 
 
 def call_api_prediction(id:str) -> str:
@@ -65,10 +68,9 @@ if st.button("Prédire", type="primary"):
     st.write(f"{model_result}")
 
 
-def call_api_shapvalues(id:str) -> list:
-    r = requests.post(f"{API_ADRESS}/model-shap", data=id)
-    print(r)
-    return r.json()
+st.divider()
+
+st.header("SHAP client")
 
 
 
@@ -83,62 +85,10 @@ shap_values = np.asarray(explainer.shap_values(data))
 
 st_shap(shap.plots.force(explainer.expected_value[0], shap_values[0,:], data.iloc[0,:]))
 
+st.divider()
 
+st.header("SHAP population")
 
-
-
-
-# X = pd.read_csv("data/data_test.csv")
-# y = pd.read_csv("data/target.csv")
-# 
-# df_target = pd.concat([X, y], axis=1)
-# 
-# ligne0 = list(df_target.loc[df_target["TARGET"] == 0].mean())
-# ligne1 = list(df_target.loc[df_target["TARGET"] == 1].mean())
-# ligne_cli = list(df_target.loc[df_target["SK_ID_CURR"] == option].mean())
-# 
-# chart_global = (
-#     pd.DataFrame([ligne0, ligne1, ligne_cli], columns=df_target.columns)
-#     .drop(columns=["SK_ID_CURR", "Unnamed: 0", "TARGET"])
-#     .T
-# )
-# 
-# st.bar_chart(chart_global)
-# 
-# st.divider()
-# 
-# list_columns = [
-#     "EXT_SOURCE_3",
-#     "EXT_SOURCE_2",
-#     "EXT_SOURCE_1",
-#     "CODE_GENDER",
-#     "DAYS_EMPLOYED",
-#     "NAME_EDUCATION_TYPE",
-#     "AMT_CREDIT",
-#     "DAYS_BIRTH",
-# ]
-# 
-# option_col = st.selectbox(
-#     "Pour quelle catégorie voulez vous voir les résultats ?", (list_columns)
-# )
-# 
-# chart_data = df.reset_index()
-# chart_data["colors"] = np.where(chart_data["SK_ID_CURR"] == option, "target", "others")
-# 
-# st.scatter_chart(chart_data, x="SK_ID_CURR", y=option_col, color="colors")
-# 
-# 
-# st.write("Vous avez sélectionné:", option)
-# 
-# 
-# def call_api(id: str) -> dict:
-#     r = requests.get(f"{API_ADRESS}/models-results", params={"id": id})
-#     return r.json()
-# 
-# 
-# model_result = call_api(id=option)
-# 
-# 
-# if st.button("Prédire", type="primary"):
-#     st.write(f"{model_result}")
-# 
+shap_values = shap.TreeExplainer(classifier._final_estimator).shap_values(X_train)
+st_shap(shap.summary_plot(shap_values, X_train))
+ 
