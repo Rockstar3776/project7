@@ -8,6 +8,8 @@ streamlit
 requests
 streamlit_shap
 ipython
+matplotlib
+
 
 # General dependencies
 pandas

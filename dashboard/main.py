@@ -7,6 +7,7 @@ import os
 import joblib
 import shap
 from streamlit_shap import st_shap
+import matplotlib.pyplot as plt
 
 API_ADRESS = os.getenv("API_ADRESS", default="http://project7api.francecentral.azurecontainer.io:8000")
 
@@ -91,4 +92,24 @@ st.header("SHAP population")
 
 shap_values = shap.TreeExplainer(classifier._final_estimator).shap_values(X_train)
 st_shap(shap.summary_plot(shap_values, X_train))
- 
+
+
+
+list_features = list(df.drop(columns=['SK_ID_CURR']).columns)
+option_feature = st.selectbox(
+    "Pour quelle feature voulez vous comparer ?", (list_features)
+)
+
+chart_data = X_train[option_feature]
+feature_data = data[option_feature]
+
+
+fig, ax = plt.subplots()
+ax.hist(chart_data, bins=20)
+ax.hist(feature_data, bins=1)
+#ax.bar(range(len(chart_data)))
+#ax.bar(range(len(feature_data)))
+
+st.pyplot(fig)
+#st.bar_chart(chart_data)
+#st.bar_chart(data[option_feature])
