@@ -84,7 +84,9 @@ explainer = shap.TreeExplainer(classifier._final_estimator)
 shap_values = np.asarray(explainer.shap_values(data))
 
 
-st_shap(shap.plots.force(explainer.expected_value[0], shap_values[0,:], data.iloc[0,:]))
+st.write(shap_values)
+
+#st_shap(shap.plots.force(explainer.expected_value[0], shap_values[0,:], data.iloc[0,:]))
 
 st.divider()
 
