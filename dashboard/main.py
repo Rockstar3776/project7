@@ -86,7 +86,9 @@ shap_values = explainer.shap_values(data)
 
 st_shap(shap.summary_plot(shap_values, data))
 
-st_shap(shap.plots.force(explainer.expected_value[0], shap_values[0], data.iloc[0,:]))
+#st_shap(shap.plots.waterfall(explainer.expected_value[0]))
+
+#st_shap(shap.plot_force(explainer.expected_value[0], shap_values[0], data.iloc[0,:]))
 
 
 st.divider()
