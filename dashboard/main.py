@@ -81,21 +81,22 @@ df[var_cat] = encoder.transform(df[var_cat])
 data = df[colonnes]
 shap.initjs()
 explainer = shap.TreeExplainer(classifier._final_estimator)
-shap_values = np.asarray(explainer.shap_values(data))
+shap_values = explainer.shap_values(data)
 
 
-st.write(shap_values)
+st_shap(shap.summary_plot(shap_values, data))
 
-#st_shap(shap.plots.force(explainer.expected_value[0], shap_values[0,:], data.iloc[0,:]))
+st_shap(shap.plots.force(explainer.expected_value[0], shap_values[0], data.iloc[0,:]))
+
 
 st.divider()
 
 st.header("SHAP population")
 
-shap_values = shap.TreeExplainer(classifier._final_estimator).shap_values(X_train)
-st_shap(shap.summary_plot(shap_values, X_train))
+shap_values_train = shap.TreeExplainer(classifier._final_estimator).shap_values(X_train)
+st_shap(shap.summary_plot(shap_values_train, X_train))
 
-
+st.write(shap_values_train)
 
 list_features = list(df.drop(columns=['SK_ID_CURR']).columns)
 option_feature = st.selectbox(
