@@ -98,23 +98,38 @@ st.header("SHAP population")
 shap_values_train = shap.TreeExplainer(classifier._final_estimator).shap_values(X_train)
 st_shap(shap.summary_plot(shap_values_train, X_train))
 
-st.write(shap_values_train)
 
-list_features = list(df.drop(columns=['SK_ID_CURR']).columns)
+list_features = ['EXT_SOURCE_3',
+                 'EXT_SOURCE_1',
+                 'EXT_SOURCE_2',
+                 'AMT_ANNUITY',
+                 'AMT_CREDIT',
+                 'DAYS_EMPLOYED',
+                 'DAYS_BIRTH',
+                 'NAME_EDUCATION_TYPE',
+                 'DAYS_ID_PUBLISH',
+                 'DAYS_REGISTRATION',]
+
 option_feature = st.selectbox(
     "Pour quelle feature voulez vous comparer ?", (list_features)
 )
 
+
 chart_data = X_train[option_feature]
-feature_data = data[option_feature]
+feature_data = pd.Series([data[option_feature].values] * len(X_train[option_feature]))
+
+fig, ax = plt.subplots()
+ax.scatter(chart_data.index, chart_data.values, color='red', marker='o', s=10)
+ax.plot(chart_data.index, feature_data.values, color='green')
+ax.legend()
+st.pyplot(fig)
 
 
 fig, ax = plt.subplots()
 ax.hist(chart_data, bins=20)
-ax.hist(feature_data, bins=1)
+ax.axvline(data[option_feature].values, color = 'g')
+st.pyplot(fig)
 #ax.bar(range(len(chart_data)))
 #ax.bar(range(len(feature_data)))
-
-st.pyplot(fig)
 #st.bar_chart(chart_data)
 #st.bar_chart(data[option_feature])
