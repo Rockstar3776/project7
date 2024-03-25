@@ -154,18 +154,13 @@ def root():
 
 
 @app.post("/model-results")
-def get_model_results(inputs: InputModel) -> str:
+def get_model_results(inputs: InputModel) -> float:
     df = pd.DataFrame(data=[inputs.model_dump()]).set_index(keys=["SK_ID_CURR"])
     df[var_num] = scaler.transform(df[var_num])
     df[var_cat] = encoder.transform(df[var_cat])
     data = df[colonnes]
     resultat = classifier.predict_proba(data)[0]
-    print(resultat)
-    if resultat[1] > 0.75:
-        prediction = "Le client a son prêt"
-    else:
-        prediction = "Le client n'a pas son prêt"
-    
+    prediction = round(resultat[1],2)
     return prediction
 
 
