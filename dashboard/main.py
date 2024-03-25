@@ -66,7 +66,12 @@ def call_api_prediction(id:str) -> str:
 
 if st.button("Prédire", type="primary"):
     model_result = call_api_prediction(id=client_json)
-    st.write(f"{model_result}")
+    if model_result >=0.75:
+        st.write(f":green[{model_result}]")
+        st.write("Le client a son prêt")
+    else:
+        st.write(f":red[{model_result}]")
+        st.write("Le client n'a pas son prêt")
 
 
 st.divider()
@@ -118,18 +123,9 @@ option_feature = st.selectbox(
 chart_data = X_train[option_feature]
 feature_data = pd.Series([data[option_feature].values] * len(X_train[option_feature]))
 
-fig, ax = plt.subplots()
-ax.scatter(chart_data.index, chart_data.values, color='red', marker='o', s=10)
-ax.plot(chart_data.index, feature_data.values, color='green')
-ax.legend()
-st.pyplot(fig)
 
 
 fig, ax = plt.subplots()
 ax.hist(chart_data, bins=20)
 ax.axvline(data[option_feature].values, color = 'g')
 st.pyplot(fig)
-#ax.bar(range(len(chart_data)))
-#ax.bar(range(len(feature_data)))
-#st.bar_chart(chart_data)
-#st.bar_chart(data[option_feature])
