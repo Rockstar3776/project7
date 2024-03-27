@@ -40,3 +40,6 @@ Build the image: `docker build -t projet7fastapi.azurecr.io/api:latest .`
 Push the image: `docker push projet7fastapi.azurecr.io/api:latest`
 
 Restart the instance: `az container restart -g oc_projet7 -n api`
+
+## About MLflow
+`python -m mlflow ui`
